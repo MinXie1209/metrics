@@ -1,5 +1,6 @@
 package minxie.space.jmx.vo
 
+import com.sun.management.OperatingSystemMXBean
 import java.lang.management.ManagementFactory
 import java.lang.management.MemoryUsage
 
@@ -22,6 +23,15 @@ class MemoryMetricVo {
 
     private var poolMap = mapOf<String, MemoryUsage>()
 
+    // java_lang_OperatingSystem_TotalPhysicalMemorySize
+    private var totalPhysicalMemorySize = 0.0f
+
+    // java_lang_OperatingSystem_CommittedVirtualMemorySize
+    private var committedVirtualMemorySize = 0.0f
+
+    // java_lang_OperatingSystem_FreeMemorySize
+    private var freePhysicalMemorySize = 0.0f
+
     constructor() {
         ManagementFactory.getMemoryMXBean().let {
             this.heapUsed = it.heapMemoryUsage.used.toFloat()
@@ -34,6 +44,11 @@ class MemoryMetricVo {
                 it.name to it.usage
             }
         }
+        ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java).let {
+            this.totalPhysicalMemorySize = it.totalMemorySize.toFloat()
+            this.committedVirtualMemorySize = it.committedVirtualMemorySize.toFloat()
+            this.freePhysicalMemorySize = it.freeMemorySize.toFloat()
+        }
     }
 
     override fun toString(): String {
@@ -45,7 +60,10 @@ class MemoryMetricVo {
                     "jvm_memory_pool_bytes_max{pool=\"${it.key}\",} ${it.value.max.toFloat()} ${System.lineSeparator()}" +
                             "jvm_memory_pool_bytes_used{pool=\"${it.key}\",} ${it.value.used.toFloat()} ${System.lineSeparator()}" +
                             "jvm_memory_pool_bytes_committed{pool=\"${it.key}\",} ${it.value.committed.toFloat()} ${System.lineSeparator()}"
-                }.joinToString(separator = "")
+                }.joinToString(separator = "") +
+                "java_lang_OperatingSystem_TotalPhysicalMemorySize $totalPhysicalMemorySize ${System.lineSeparator()}" +
+                "java_lang_OperatingSystem_CommittedVirtualMemorySize $committedVirtualMemorySize ${System.lineSeparator()}" +
+                "java_lang_OperatingSystem_FreeMemorySize $freePhysicalMemorySize ${System.lineSeparator()}"
     }
 
 
