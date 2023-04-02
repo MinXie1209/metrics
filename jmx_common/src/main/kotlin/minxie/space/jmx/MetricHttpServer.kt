@@ -25,13 +25,9 @@ class MetricHttpServer {
 
 class HttpMetricHandler : HttpHandler {
     override fun handle(exchange: HttpExchange) {
-        println("${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())} : handle")
-        val response = getJvmInfo() +
-                getJvmThreadsState() +
-                getProcessInfo() +
-                getMemoryInfo() +
-                getClassInfo() +
-                getGcInfo()
+        println("${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())} : POST: /metrics")
+        val response =
+            "${getJvmInfo()}${getClassInfo()}${getGcInfo()}${getMemoryInfo()}${getProcessInfo()}${getJvmThreadsState()}"
         exchange.sendResponseHeaders(200, response.length.toLong())
         val os = exchange.responseBody
         os.write(response.toByteArray())
