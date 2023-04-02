@@ -85,7 +85,7 @@
       "gridPos": {
         "h": 4,
         "w": 3,
-        "x": 3,
+        "x": 0,
         "y": 0
       },
       "hideTimeOverride": false,
@@ -169,7 +169,7 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 6,
+        "x": 3,
         "y": 0
       },
       "id": 14,
@@ -249,7 +249,7 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 10,
+        "x": 7,
         "y": 0
       },
       "id": 15,
@@ -327,7 +327,7 @@
       "gridPos": {
         "h": 4,
         "w": 7,
-        "x": 14,
+        "x": 11,
         "y": 0
       },
       "id": 19,
@@ -374,6 +374,71 @@
           "color": {
             "mode": "thresholds"
           },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 61,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "jvm_classes_unloaded_total{job=\"$job\", instance=\"$instance\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "unload",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Class unload",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
           "mappings": [
             {
               "options": {
@@ -405,7 +470,7 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 6,
+        "x": 0,
         "y": 4
       },
       "id": 39,
@@ -484,7 +549,7 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 10,
+        "x": 4,
         "y": 4
       },
       "id": 23,
@@ -562,7 +627,7 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 14,
+        "x": 8,
         "y": 4
       },
       "id": 38,
@@ -610,6 +675,72 @@
         }
       ],
       "title": "Open file descriptors",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 4
+      },
+      "id": 4,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "jvm_classes_currently_loaded{job=\"$job\", instance=\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 5,
+          "legendFormat": "loaded",
+          "metric": "jvm_classes_loaded",
+          "range": true,
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Class loading",
       "type": "stat"
     },
     {
@@ -718,11 +849,15 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "Max": "semi-dark-blue",
+        "Used": "dark-green"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": {
+        "type": "prometheus",
         "uid": "$datasource"
       },
       "fill": 1,
@@ -764,9 +899,9 @@
       "repeatDirection": "h",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:214",
           "alias": "Usage %",
           "bars": true,
-          "color": "#6d1f62",
           "legend": false,
           "lines": false,
           "yaxis": 2,
@@ -801,10 +936,12 @@
           "datasource": {
             "uid": "$datasource"
           },
+          "editorMode": "code",
           "expr": "jvm_memory_bytes_used{area=\"$memarea\",job=\"$job\",instance=\"$instance\"} / jvm_memory_bytes_max >= 0",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Usage %",
+          "range": true,
           "refId": "C"
         }
       ],
@@ -824,11 +961,13 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:101",
           "format": "bytes",
           "logBase": 1,
           "show": true
         },
         {
+          "$$hashKey": "object:102",
           "format": "percentunit",
           "label": "",
           "logBase": 1,
@@ -842,7 +981,11 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "Committed": "semi-dark-yellow",
+        "Max": "dark-blue",
+        "Used": "dark-green"
+      },
       "bars": false,
       "dashLength": 10,
       "dashes": false,
@@ -948,11 +1091,13 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:306",
           "format": "bytes",
           "logBase": 1,
           "show": true
         },
         {
+          "$$hashKey": "object:307",
           "format": "short",
           "logBase": 1,
           "show": true
@@ -1130,11 +1275,13 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:79",
           "format": "s",
           "logBase": 1,
           "show": true
         },
         {
+          "$$hashKey": "object:80",
           "format": "short",
           "logBase": 1,
           "show": false
@@ -1156,8 +1303,8 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
-        "w": 12,
+        "h": 8,
+        "w": 24,
         "x": 0,
         "y": 53
       },
@@ -1259,88 +1406,6 @@
       }
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 10000
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 53
-      },
-      "id": 4,
-      "links": [],
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.4.7",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "jvm_classes_currently_loaded{job=\"$job\", instance=\"$instance\"}",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 5,
-          "legendFormat": "loaded",
-          "metric": "jvm_classes_loaded",
-          "range": true,
-          "refId": "A",
-          "step": 10
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "jvm_classes_unloaded_total{job=\"$job\", instance=\"$instance\"}",
-          "hide": false,
-          "legendFormat": "unload",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Class loading",
-      "type": "stat"
-    },
-    {
       "aliasColors": {
         "BLOCKED": "dark-red",
         "DEAD_LOCKED": "dark-red",
@@ -1360,10 +1425,10 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
-        "h": 9,
+        "h": 12,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 61
       },
       "hiddenSeries": false,
       "id": 29,
@@ -1531,7 +1596,7 @@
         "h": 20,
         "w": 24,
         "x": 0,
-        "y": 71
+        "y": 73
       },
       "id": 56,
       "links": [],
@@ -1582,7 +1647,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 91
+        "y": 93
       },
       "hiddenSeries": false,
       "id": 44,
@@ -1844,7 +1909,7 @@
   },
   "timezone": "",
   "title": "JVM dashboard",
-  "uid": "minxie-jvm-dashboard",
-  "version": 18,
+  "uid": "chanjarster-jvm-dashboard",
+  "version": 27,
   "weekStart": ""
 }
