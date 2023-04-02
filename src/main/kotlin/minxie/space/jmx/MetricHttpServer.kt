@@ -3,6 +3,12 @@ package minxie.space.jmx
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
+import minxie.space.jmx.vo.ClassMetricVo
+import minxie.space.jmx.vo.GcMetricVo
+import minxie.space.jmx.vo.JvmInfoMetricVo
+import minxie.space.jmx.vo.MemoryMetricVo
+import minxie.space.jmx.vo.ProcessMetricVo
+import minxie.space.jmx.vo.ThreadMetricVo
 import java.lang.management.ManagementFactory
 import java.net.InetSocketAddress
 import java.text.SimpleDateFormat
@@ -19,27 +25,41 @@ class MetricHttpServer {
 
 class HttpMetricHandler : HttpHandler {
     override fun handle(exchange: HttpExchange) {
-        println(" ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())} : handle")
-        val jvmThreadsState = getJvmThreadsState()
-        val response = getJvmInfo()+
-                jvmThreadsState
+        println("${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())} : handle")
+        val response = getJvmInfo() +
+                getJvmThreadsState() +
+                getProcessInfo() +
+                getMemoryInfo() +
+                getClassInfo() +
+                getGcInfo()
         exchange.sendResponseHeaders(200, response.length.toLong())
         val os = exchange.responseBody
         os.write(response.toByteArray())
         exchange.close()
     }
 
+    private fun getGcInfo(): String {
+        return GcMetricVo().toString()
+    }
+
+    private fun getClassInfo(): String {
+        return ClassMetricVo().toString()
+    }
+
+    private fun getMemoryInfo(): String {
+        return MemoryMetricVo().toString()
+
+    }
+
+    private fun getProcessInfo(): String {
+        return ProcessMetricVo().toString()
+    }
+
     /**
      * jvm_info
      */
     private fun getJvmInfo(): String {
-        val stringBuilder = StringBuilder()
-//        "version", System.getProperty("java.runtime.version", "unknown"),
-//        "vendor", System.getProperty("java.vm.vendor", "unknown"),
-//        "runtime", System.getProperty("java.runtime.name", "unknown")
-        stringBuilder.append("jvm_info{version=\"${System.getProperty("java.runtime.version", "unknown")}\",vendor=\"${System.getProperty("java.vm.vendor", "unknown")}\",runtime=\"${System.getProperty("java.runtime.name", "unknown")}\"} 1")
-            .append(System.lineSeparator())
-        return stringBuilder.toString()
+        return JvmInfoMetricVo.toString()
     }
 
     /**
@@ -47,28 +67,7 @@ class HttpMetricHandler : HttpHandler {
      */
     private fun getJvmThreadsState(): String {
         val threadMXBean = ManagementFactory.getThreadMXBean()
-        val stringBuilder = StringBuilder()
-        threadMXBean.allThreadIds?.let {
-            // 获取了所有的线程id ,先分组
-            val threadInfoMap = threadMXBean.getThreadInfo(it, 0).groupBy { it.threadState }
-            // 遍历转为
-            threadInfoMap.forEach { (threadState, threadInfos) ->
-                stringBuilder.append("jvm_threads_state{state=\"${threadState}\",} ${threadInfos.size.toFloat()}")
-                    .append(System.lineSeparator())
-            }
-        }
-        stringBuilder.append("jvm_threads_current ${threadMXBean.threadCount.toFloat()}")
-            .append(System.lineSeparator())
-            .append("jvm_threads_daemon ${threadMXBean.daemonThreadCount.toFloat()}")
-            .append(System.lineSeparator())
-            .append("jvm_threads_peak ${threadMXBean.peakThreadCount.toFloat()}")
-            .append(System.lineSeparator())
-            .append("jvm_threads_started_total ${threadMXBean.totalStartedThreadCount.toFloat()}")
-            .append(System.lineSeparator())
-            .append("jvm_threads_deadlocked ${threadMXBean.findDeadlockedThreads()?.size?.toFloat() ?: 0f}")
-            .append(System.lineSeparator())
-            .append("jvm_threads_deadlocked_monitor ${threadMXBean.findMonitorDeadlockedThreads()?.size?.toFloat() ?: 0f}")
-            .append(System.lineSeparator())
-        return stringBuilder.toString()
+        val threadMetricVo = ThreadMetricVo(threadMXBean)
+        return threadMetricVo.toString()
     }
 }
