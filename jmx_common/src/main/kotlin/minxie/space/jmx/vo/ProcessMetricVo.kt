@@ -36,7 +36,7 @@ class ProcessMetricVo public constructor() {
             this.availableProcessors = it.availableProcessors.toFloat()
             this.systemLoadAverage = it.systemLoadAverage.toFloat()
             this.processCpuLoad = it.processCpuLoad.toFloat()
-            this.cpuLoad = it.cpuLoad.toFloat()
+            this.cpuLoad = it.systemCpuLoad.toFloat()
         }
         ManagementFactory.getPlatformMXBean(UnixOperatingSystemMXBean::class.java).let {
             this.openFds = it.openFileDescriptorCount.toFloat()
