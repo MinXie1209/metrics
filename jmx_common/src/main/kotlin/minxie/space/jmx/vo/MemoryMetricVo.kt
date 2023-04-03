@@ -45,9 +45,9 @@ class MemoryMetricVo {
             }
         }
         ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java).let {
-            this.totalPhysicalMemorySize = it.totalMemorySize.toFloat()
+            this.totalPhysicalMemorySize = it.totalPhysicalMemorySize.toFloat()
             this.committedVirtualMemorySize = it.committedVirtualMemorySize.toFloat()
-            this.freePhysicalMemorySize = it.freeMemorySize.toFloat()
+            this.freePhysicalMemorySize = it.freePhysicalMemorySize.toFloat()
         }
     }
 
