@@ -3,19 +3,23 @@ package minxie.space.jmx
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import minxie.space.jmx.vo.ClassMetricVo
-import minxie.space.jmx.vo.GcMetricVo
-import minxie.space.jmx.vo.JvmInfoMetricVo
-import minxie.space.jmx.vo.MemoryMetricVo
-import minxie.space.jmx.vo.ProcessMetricVo
-import minxie.space.jmx.vo.ThreadMetricVo
-import java.lang.management.ManagementFactory
+import minxie.space.jmx.vo.metrics.ClassMetricVo
+import minxie.space.jmx.vo.metrics.GcMetricVo
+import minxie.space.jmx.vo.metrics.JvmInfoMetricVo
+import minxie.space.jmx.vo.metrics.MemoryMetricVo
+import minxie.space.jmx.vo.metrics.ProcessMetricVo
+import minxie.space.jmx.vo.metrics.ThreadMetricVo
 import java.net.InetSocketAddress
 import java.text.SimpleDateFormat
 
 class MetricHttpServer {
-    fun start(port: Int) {
-        println("MetricHttpServer start on port $port")
+    companion object {
+        var applicationName = "java"
+    }
+
+    fun start(port: Int, applicationName: String) {
+        MetricHttpServer.applicationName = applicationName
+        println("MetricHttpServer start on port $port applicationName-$applicationName")
         HttpServer.create(InetSocketAddress(port), 3).let {
             it.createContext("/metrics", HttpMetricHandler())
             it.start()
@@ -62,8 +66,6 @@ class HttpMetricHandler : HttpHandler {
      * 获取jvm线程状态
      */
     private fun getJvmThreadsState(): String {
-        val threadMXBean = ManagementFactory.getThreadMXBean()
-        val threadMetricVo = ThreadMetricVo(threadMXBean)
-        return threadMetricVo.toString()
+        return ThreadMetricVo().toString()
     }
 }
