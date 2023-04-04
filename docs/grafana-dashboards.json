@@ -26,12 +26,13 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 8563,
   "graphTooltip": 0,
-  "id": 5,
+  "id": 6,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
+        "type": "prometheus",
         "uid": "$datasource"
       },
       "fieldConfig": {
@@ -118,7 +119,8 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "up{job=\"$job\",instance=\"$instance\"}",
+          "editorMode": "code",
+          "expr": "up{instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -195,7 +197,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "time() - process_start_time_seconds{job=\"$job\",instance=\"$instance\"}",
+          "expr": "time() - process_start_time_seconds{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -276,7 +278,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "process_start_time_seconds{job=\"$job\",instance=\"$instance\"}*1000",
+          "expr": "process_start_time_seconds{applicationName = \"$applicationName\",instance=\"$instance\"}*1000",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -353,7 +355,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "label_join(jvm_info{job=\"$job\",instance=\"$instance\"}, \"jdk\", \", \", \"vendor\", \"runtime\", \"version\")",
+          "expr": "label_join(jvm_info{applicationName = \"$applicationName\",instance=\"$instance\"}, \"jdk\", \", \", \"vendor\", \"runtime\", \"version\")",
           "format": "table",
           "instant": true,
           "intervalFactor": 1,
@@ -418,7 +420,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "jvm_classes_unloaded_total{job=\"$job\", instance=\"$instance\"}",
+          "expr": "jvm_classes_unloaded_total{applicationName = \"$applicationName\", instance=\"$instance\"}",
           "hide": false,
           "instant": false,
           "legendFormat": "unload",
@@ -498,7 +500,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_AvailableProcessors{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_AvailableProcessors{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -576,7 +578,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_SystemLoadAverage{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_SystemLoadAverage{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -654,7 +656,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "process_open_fds{job=\"$job\",instance=\"$instance\"}",
+          "expr": "process_open_fds{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -667,7 +669,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "process_max_fds{job=\"$job\",instance=\"$instance\"}",
+          "expr": "process_max_fds{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "hide": false,
           "legendFormat": "process_max_fds",
           "range": true,
@@ -729,7 +731,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jvm_classes_currently_loaded{job=\"$job\", instance=\"$instance\"}",
+          "expr": "jvm_classes_currently_loaded{applicationName = \"$applicationName\", instance=\"$instance\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 5,
@@ -795,7 +797,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_CpuLoad{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_CpuLoad{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "System",
@@ -807,7 +809,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_ProcessCpuLoad{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_ProcessCpuLoad{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "JVM",
@@ -916,7 +918,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_memory_bytes_used{area=\"$memarea\",job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_memory_bytes_used{area=\"$memarea\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Used",
@@ -926,7 +928,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": " jvm_memory_bytes_max{area=\"$memarea\",job=\"$job\",instance=\"$instance\"}",
+          "expr": " jvm_memory_bytes_max{area=\"$memarea\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Max",
@@ -937,7 +939,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jvm_memory_bytes_used{area=\"$memarea\",job=\"$job\",instance=\"$instance\"} / jvm_memory_bytes_max >= 0",
+          "expr": "jvm_memory_bytes_used{area=\"$memarea\",applicationName = \"$applicationName\",instance=\"$instance\"} / jvm_memory_bytes_max >= 0",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Usage %",
@@ -1039,7 +1041,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_memory_pool_bytes_max{pool=\"$mempool\",job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_memory_pool_bytes_max{pool=\"$mempool\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1052,7 +1054,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_memory_pool_bytes_used{pool=\"$mempool\",job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_memory_pool_bytes_used{pool=\"$mempool\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1065,7 +1067,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_memory_pool_bytes_committed{pool=\"$mempool\",job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_memory_pool_bytes_committed{pool=\"$mempool\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1121,99 +1123,8 @@
       "gridPos": {
         "h": 9,
         "w": 12,
-        "x": 0,
-        "y": 44
-      },
-      "hiddenSeries": false,
-      "id": 6,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": true,
-        "min": true,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "9.4.7",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "increase(jvm_gc_collection_seconds_count{job=\"$job\",instance=~\"$instance\"}[$__interval])",
-          "format": "time_series",
-          "interval": "60s",
-          "intervalFactor": 1,
-          "legendFormat": "{{gc}}",
-          "metric": "",
-          "refId": "A",
-          "step": 10
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "GC count increase",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": 0,
-          "format": "short",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "decimals": 0,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 9,
-        "w": 12,
         "x": 12,
-        "y": 44
+        "y": 26
       },
       "hiddenSeries": false,
       "id": 5,
@@ -1249,7 +1160,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "increase(jvm_gc_collection_seconds_sum{job=\"$job\",instance=~\"$instance\"}[$__interval])",
+          "expr": "increase(jvm_gc_collection_seconds_sum{applicationName = \"$applicationName\",instance=~\"$instance\"}[$__interval])",
           "format": "time_series",
           "interval": "60s",
           "intervalFactor": 1,
@@ -1303,10 +1214,101 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 53
+      },
+      "hiddenSeries": false,
+      "id": 6,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.4.7",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "expr": "increase(jvm_gc_collection_seconds_count{applicationName = \"$applicationName\",instance=~\"$instance\"}[$__interval])",
+          "format": "time_series",
+          "interval": "60s",
+          "intervalFactor": 1,
+          "legendFormat": "{{gc}}",
+          "metric": "",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "GC count increase",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "decimals": 0,
+          "format": "short",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "uid": "$datasource"
+      },
+      "decimals": 0,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 53
+        "y": 62
       },
       "hiddenSeries": false,
       "id": 3,
@@ -1343,7 +1345,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_threads_current{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads_current{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 5,
           "legendFormat": "JVM current threads",
@@ -1355,7 +1357,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_threads_daemon{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads_daemon{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 5,
           "legendFormat": "JVM daemon threads",
@@ -1367,7 +1369,7 @@
           "datasource": {
             "uid": "$datasource"
           },
-          "expr": "jvm_threads_deadlocked{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads_deadlocked{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "JVM deadlocked threads",
@@ -1428,7 +1430,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 61
+        "y": 70
       },
       "hiddenSeries": false,
       "id": 29,
@@ -1464,7 +1466,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jvm_threads_state{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads_state{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{state}}",
@@ -1476,7 +1478,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jvm_threads_deadlocked{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads_deadlocked{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "DEAD_LOCKED",
@@ -1489,7 +1491,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jvm_threads_current{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads_current{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "hide": false,
           "legendFormat": "LIVE_THREAD",
           "range": true,
@@ -1593,10 +1595,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 20,
+        "h": 58,
         "w": 24,
         "x": 0,
-        "y": 73
+        "y": 82
       },
       "id": 56,
       "links": [],
@@ -1621,7 +1623,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jvm_threads{job=\"$job\",instance=\"$instance\"}",
+          "expr": "jvm_threads{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "{{threadName}}",
@@ -1647,7 +1649,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 140
       },
       "hiddenSeries": false,
       "id": 44,
@@ -1683,7 +1685,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_TotalPhysicalMemorySize{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_TotalPhysicalMemorySize{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Total physical memory",
@@ -1695,7 +1697,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_CommittedVirtualMemorySize{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_CommittedVirtualMemorySize{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Committed virtual memory",
@@ -1707,7 +1709,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "java_lang_OperatingSystem_FreeMemorySize{job=\"$job\",instance=\"$instance\"}",
+          "expr": "java_lang_OperatingSystem_FreeMemorySize{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "Free physical memory",
@@ -1776,26 +1778,6 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": true,
-          "text": "java",
-          "value": "java"
-        },
-        "hide": 0,
-        "label": "job",
-        "name": "job",
-        "options": [
-          {
-            "selected": true,
-            "text": "java",
-            "value": "java"
-          }
-        ],
-        "query": "java",
-        "skipUrlSync": false,
-        "type": "textbox"
-      },
-      {
         "allValue": ".*",
         "current": {
           "selected": false,
@@ -1813,7 +1795,7 @@
         "name": "instance",
         "options": [],
         "query": {
-          "query": "label_values(jvm_info{job=\"$job\"},instance)",
+          "query": "label_values(jvm_info{applicationName = \"$applicationName\"},instance)",
           "refId": "Prometheus-instance-Variable-Query"
         },
         "refresh": 1,
@@ -1827,9 +1809,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "uid": "$datasource"
@@ -1841,7 +1827,7 @@
         "name": "mempool",
         "options": [],
         "query": {
-          "query": "label_values(jvm_memory_pool_bytes_max{job=\"$job\", instance=\"$instance\"}, pool)",
+          "query": "label_values(jvm_memory_pool_bytes_max{applicationName = \"$applicationName\", instance=\"$instance\"}, pool)",
           "refId": "Prometheus-mempool-Variable-Query"
         },
         "refresh": 1,
@@ -1855,9 +1841,13 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": {
           "uid": "$datasource"
@@ -1869,7 +1859,7 @@
         "name": "memarea",
         "options": [],
         "query": {
-          "query": "label_values(jvm_memory_bytes_used{job=\"$job\", instance=\"$instance\"}, area)",
+          "query": "label_values(jvm_memory_bytes_used{applicationName = \"$applicationName\", instance=\"$instance\"}, area)",
           "refId": "Prometheus-memarea-Variable-Query"
         },
         "refresh": 1,
@@ -1880,6 +1870,33 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "java-test",
+          "value": "java-test"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "applicationName",
+        "hide": 0,
+        "includeAll": false,
+        "label": "applicationName",
+        "multi": false,
+        "name": "applicationName",
+        "options": [],
+        "query": {
+          "query": "applicationName",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
@@ -1908,8 +1925,8 @@
     ]
   },
   "timezone": "",
-  "title": "JVM dashboard",
-  "uid": "chanjarster-jvm-dashboard",
-  "version": 27,
+  "title": "JVM-M",
+  "uid": "minxie-jvm-dashboard",
+  "version": 6,
   "weekStart": ""
 }
