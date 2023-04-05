@@ -26,7 +26,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 8563,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 7,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -120,7 +120,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "up{instance=\"$instance\"}",
+          "expr": "jvm_info{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
           "intervalFactor": 1,
@@ -132,6 +132,7 @@
     },
     {
       "datasource": {
+        "type": "prometheus",
         "uid": "$datasource"
       },
       "fieldConfig": {
@@ -197,6 +198,7 @@
           "datasource": {
             "uid": "$datasource"
           },
+          "editorMode": "code",
           "expr": "time() - process_start_time_seconds{applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "instant": true,
@@ -381,7 +383,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "dark-red",
+                "color": "green",
                 "value": null
               }
             ]
@@ -390,12 +392,12 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 4,
         "w": 6,
         "x": 18,
         "y": 0
       },
-      "id": 61,
+      "id": 69,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -420,15 +422,15 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "jvm_classes_unloaded_total{applicationName = \"$applicationName\", instance=\"$instance\"}",
+          "expr": "tomcat_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}",
           "hide": false,
           "instant": false,
-          "legendFormat": "unload",
+          "legendFormat": "Tomcat 完成任务总数",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "Class unload",
+      "title": "Tomcat 完成任务总数",
       "type": "stat"
     },
     {
@@ -746,6 +748,300 @@
       "type": "stat"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-red",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 4
+      },
+      "id": 61,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "jvm_classes_unloaded_total{applicationName = \"$applicationName\", instance=\"$instance\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "unload",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Class unload",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "dark-green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 70,
+      "links": [],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "increase(tomcat_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}[$__interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Tomcat 完成任务数",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Tomcat 完成任务数",
+      "type": "timeseries"
+    },
+    {
+      "aliasColors": {
+        "BLOCKED": "dark-red",
+        "DEAD_LOCKED": "dark-red",
+        "LIVE_THREAD": "dark-blue",
+        "RUNNABLE": "dark-green",
+        "TIMED_WAITING": "orange",
+        "WAITING": "light-yellow"
+      },
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "decimals": 1,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "hiddenSeries": false,
+      "id": 29,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": true,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.4.7",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "tomcat_thread_pool_active_count{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "format": "time_series",
+          "intervalFactor": 1,
+          "legendFormat": "active_count",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "tomcat_thread_pool_core_pool_size{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "hide": false,
+          "legendFormat": "core_pool_size",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "tomcat_thread_pool_maximum_pool_size{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "hide": false,
+          "legendFormat": "maximum_pool_size",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "tomcat_thread_pool_queue_size{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "hide": false,
+          "legendFormat": "queue_size",
+          "range": true,
+          "refId": "D"
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "Tomcat Thread Pool",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:724",
+          "decimals": 1,
+          "format": "none",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:725",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
@@ -761,7 +1057,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 28
       },
       "hiddenSeries": false,
       "id": 51,
@@ -868,7 +1164,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 17
+        "y": 37
       },
       "hiddenSeries": false,
       "id": 8,
@@ -1000,7 +1296,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 26
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 2,
@@ -1124,7 +1420,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 26
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 5,
@@ -1208,6 +1504,7 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
+        "type": "prometheus",
         "uid": "$datasource"
       },
       "decimals": 0,
@@ -1217,7 +1514,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 53
+        "y": 73
       },
       "hiddenSeries": false,
       "id": 6,
@@ -1252,12 +1549,14 @@
           "datasource": {
             "uid": "$datasource"
           },
+          "editorMode": "code",
           "expr": "increase(jvm_gc_collection_seconds_count{applicationName = \"$applicationName\",instance=~\"$instance\"}[$__interval])",
           "format": "time_series",
           "interval": "60s",
           "intervalFactor": 1,
           "legendFormat": "{{gc}}",
           "metric": "",
+          "range": true,
           "refId": "A",
           "step": 10
         }
@@ -1278,12 +1577,14 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:514",
           "decimals": 0,
           "format": "short",
           "logBase": 1,
           "show": true
         },
         {
+          "$$hashKey": "object:515",
           "format": "short",
           "logBase": 1,
           "show": false
@@ -1308,7 +1609,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 82
       },
       "hiddenSeries": false,
       "id": 3,
@@ -1430,10 +1731,10 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 70
+        "y": 90
       },
       "hiddenSeries": false,
-      "id": 29,
+      "id": 68,
       "legend": {
         "alignAsTable": false,
         "avg": false,
@@ -1595,10 +1896,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 58,
+        "h": 12,
         "w": 24,
         "x": 0,
-        "y": 82
+        "y": 102
       },
       "id": 56,
       "links": [],
@@ -1649,7 +1950,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 140
+        "y": 114
       },
       "hiddenSeries": false,
       "id": 44,
@@ -1874,8 +2175,8 @@
       {
         "current": {
           "selected": false,
-          "text": "java-test",
-          "value": "java-test"
+          "text": "demo4",
+          "value": "demo4"
         },
         "datasource": {
           "type": "prometheus",
@@ -1927,6 +2228,6 @@
   "timezone": "",
   "title": "JVM-M",
   "uid": "minxie-jvm-dashboard",
-  "version": 6,
+  "version": 12,
   "weekStart": ""
 }
