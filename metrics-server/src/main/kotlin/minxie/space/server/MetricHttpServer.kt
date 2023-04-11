@@ -1,37 +1,52 @@
 package minxie.space.server
 
-import com.sun.net.httpserver.HttpExchange
-import com.sun.net.httpserver.HttpHandler
-import com.sun.net.httpserver.HttpServer
+import io.netty.bootstrap.ServerBootstrap
+import io.netty.channel.ChannelInitializer
+import io.netty.channel.EventLoopGroup
+import io.netty.channel.nio.NioEventLoopGroup
+import io.netty.channel.socket.SocketChannel
+import io.netty.channel.socket.nio.NioServerSocketChannel
+import io.netty.handler.codec.http.HttpObjectAggregator
+import io.netty.handler.codec.http.HttpRequestDecoder
+import io.netty.handler.codec.http.HttpResponseEncoder
 import minxie.space.jvm.vo.metrics.*
-import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
 import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
-import java.net.InetSocketAddress
-import java.text.SimpleDateFormat
 
 class MetricHttpServer {
 
-
+    @Throws(Exception::class)
     fun start(port: Int, applicationName: String) {
-        MetricBaseVo.applicationName = applicationName
         println("MetricHttpServer start on port $port applicationName-$applicationName")
-        HttpServer.create(InetSocketAddress(port), 3).let {
-            it.createContext("/metrics", HttpMetricHandler())
-            it.start()
+        val bossGroup: EventLoopGroup = NioEventLoopGroup()
+        val workerGroup: EventLoopGroup = NioEventLoopGroup()
+        try {
+            val b = ServerBootstrap()
+            b.group(bossGroup, workerGroup)
+                .channel(NioServerSocketChannel::class.java)
+                .childHandler(object : ChannelInitializer<SocketChannel>() {
+                    @Throws(Exception::class)
+                    override fun initChannel(ch: SocketChannel) {
+                        ch.pipeline().addLast(HttpRequestDecoder())
+                        ch.pipeline().addLast(HttpResponseEncoder())
+                        ch.pipeline().addLast("aggregator", HttpObjectAggregator(10 * 1024 * 1024))
+                        ch.pipeline().addLast(HttpServerHandler())
+                    }
+                })
+            val f = b.bind(port).sync()
+            f.channel().closeFuture().sync()
+        } finally {
+            workerGroup.shutdownGracefully()
+            bossGroup.shutdownGracefully()
         }
     }
+
 }
 
-class HttpMetricHandler : HttpHandler {
-    override fun handle(exchange: HttpExchange) {
-        println("${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())} : POST: /metrics")
-        val response =
-            "${getJvmInfo()}${getClassInfo()}${getGcInfo()}${getMemoryInfo()}${getProcessInfo()}${getJvmThreadsState()}${getTomcatThreadPoolInfo()}${getJdkThreadPoolInfo()}"
-        exchange.sendResponseHeaders(200, response.length.toLong())
-        val os = exchange.responseBody
-        os.write(response.toByteArray())
-        exchange.close()
+object HttpMetricResponse {
+
+    fun response(): String {
+        return "${getJvmInfo()}${getClassInfo()}${getGcInfo()}${getMemoryInfo()}${getProcessInfo()}${getJvmThreadsState()}${getTomcatThreadPoolInfo()}${getJdkThreadPoolInfo()}"
     }
 
     private fun getGcInfo(): String {
