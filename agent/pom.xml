@@ -12,21 +12,19 @@
     <artifactId>agent</artifactId>
     <packaging>jar</packaging>
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <pre.main.path>minxie.space.agent.AgentMain</pre.main.path>
     </properties>
-    <dependencies>
-        <dependency>
-            <groupId>minxie.space</groupId>
-            <artifactId>metrics-server</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 
+    <dependencies>
+        <!--   这个依赖只作用于编译时期，运行时使用Xbootclasspath/a引入    -->
         <dependency>
             <groupId>minxie.space</groupId>
-            <artifactId>thread-pool-metrics</artifactId>
+            <artifactId>client</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <build>
@@ -54,28 +52,22 @@
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
                     <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
                         <manifestEntries>
-                            <Premain-Class>minxie.space.agent.AgentMain</Premain-Class>
+                            <Premain-Class>${pre.main.path}</Premain-Class>
+                            <Can-Redefine-Classes>true</Can-Redefine-Classes>
+                            <Can-Retransform-Classes>true</Can-Retransform-Classes>
                         </manifestEntries>
                     </archive>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>

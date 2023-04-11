@@ -43,6 +43,6 @@ object TomcatThreadPoolAdvice {
     @Advice.OnMethodEnter
     @JvmStatic
     fun enter(@Advice.This obj: Any) {
-        TomcatThreadPoolContext.addThreadPool(obj)
+        ThreadPoolContext.addTomcatThreadPool(obj)
     }
 }

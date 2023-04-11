@@ -5,6 +5,7 @@ import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import minxie.space.jvm.vo.metrics.*
 import minxie.space.metrics.vo.MetricBaseVo
+import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
 import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
 import java.net.InetSocketAddress
 import java.text.SimpleDateFormat
@@ -26,7 +27,7 @@ class HttpMetricHandler : HttpHandler {
     override fun handle(exchange: HttpExchange) {
         println("${SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis())} : POST: /metrics")
         val response =
-            "${getJvmInfo()}${getClassInfo()}${getGcInfo()}${getMemoryInfo()}${getProcessInfo()}${getJvmThreadsState()}${getTomcatThreadPoolInfo()}"
+            "${getJvmInfo()}${getClassInfo()}${getGcInfo()}${getMemoryInfo()}${getProcessInfo()}${getJvmThreadsState()}${getTomcatThreadPoolInfo()}${getJdkThreadPoolInfo()}"
         exchange.sendResponseHeaders(200, response.length.toLong())
         val os = exchange.responseBody
         os.write(response.toByteArray())
@@ -66,5 +67,9 @@ class HttpMetricHandler : HttpHandler {
 
     private fun getTomcatThreadPoolInfo(): String {
         return TomcatThreadPoolMetricsVo().toString()
+    }
+
+    private fun getJdkThreadPoolInfo(): String {
+        return JdkThreadPoolMetricsVo().toString()
     }
 }

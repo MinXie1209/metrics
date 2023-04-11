@@ -7,6 +7,8 @@ object ThreadPoolAgent {
     fun premain(arg: String?, instrumentation: Instrumentation) {
         // 插桩 tomcat线程池
         TomcatThreadPoolAgent.premain(arg, instrumentation)
+        // 插桩 jdk线程池
+        JdkThreadPoolAgent.premain(arg, instrumentation)
     }
 
 
