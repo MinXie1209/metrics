@@ -2,12 +2,12 @@ package minxie.space.thread.metrics
 
 import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.metrics.vo.MetricItemVo
-import minxie.space.thread.TomcatThreadPoolContext
+import minxie.space.thread.ThreadPoolContext
 import java.util.concurrent.AbstractExecutorService
 
 class TomcatThreadPoolMetricsVo : MetricBaseVo() {
     init {
-        TomcatThreadPoolContext.getThreadPoolSet().filterIsInstance<AbstractExecutorService>().forEach {
+        ThreadPoolContext.getTomcatThreadPoolSet().filterIsInstance<AbstractExecutorService>().forEach {
             // 获取字段
             it.javaClass.getMethod("getActiveCount").invoke(it)?.let { activeCount ->
                 // 添加到metricItemVo
