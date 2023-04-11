@@ -69,6 +69,7 @@
                             <include>minxie.space:**:jar:</include>
                             <include>org.jetbrains.kotlin:**:jar:</include>
                             <include>org.jetbrains:**:jar:</include>
+                            <include>io.netty:**:jar:</include>
                         </includes>
                     </artifactSet>
                 </configuration>
