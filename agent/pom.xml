@@ -58,9 +58,6 @@
                 <version>3.1.0</version>
                 <configuration>
                     <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                        </manifest>
                         <manifestEntries>
                             <Premain-Class>${pre.main.path}</Premain-Class>
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
