@@ -12,9 +12,6 @@ import java.util.concurrent.ThreadPoolExecutor
 object JdkThreadPoolAgent {
     @JvmStatic
     fun premain(arg: String?, instrumentation: Instrumentation) {
-        println("JdkThreadPoolAgent premain")
-        println("JdkThreadPoolAgent arg: $arg")
-        println("JdkThreadPoolAgent instrumentation: $instrumentation")
         AgentBuilder.Default()
             .disableClassFormatChanges()
             .with(AgentBuilder.RedefinitionStrategy.RETRANSFORMATION)
@@ -25,17 +22,9 @@ object JdkThreadPoolAgent {
             .with(AgentBuilder.Listener.StreamWriting.toSystemOut().withErrorsOnly())
             .ignore(ElementMatchers.noneOf(ThreadPoolExecutor::class.java))
             .type(ElementMatchers.`is`(ThreadPoolExecutor::class.java))
-            .transform { builder, _, _, _, p ->
+            .transform { builder, _, _, _, _ ->
                 builder.visit(Advice.to(JdkThreadPoolExecutorAdvice::class.java).on(ElementMatchers.isConstructor()))
             }.installOn(instrumentation)
 
-    }
-}
-
-object JdkThreadPoolExecutorAdvice {
-    @Advice.OnMethodExit
-    @JvmStatic
-    fun exit(@Advice.This obj: Any) {
-        ThreadPoolContext.addJdkThreadPool(obj)
     }
 }
