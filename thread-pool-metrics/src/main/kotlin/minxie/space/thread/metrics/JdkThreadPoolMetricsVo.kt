@@ -2,7 +2,7 @@ package minxie.space.thread.metrics
 
 import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.metrics.vo.MetricItemVo
-import minxie.space.thread.ThreadPoolContext
+import minxie.space.metrics.core.thread.ThreadPoolContext
 import java.util.concurrent.ThreadPoolExecutor
 
 class JdkThreadPoolMetricsVo : MetricBaseVo() {

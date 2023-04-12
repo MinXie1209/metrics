@@ -18,11 +18,39 @@
         <pre.main.path>minxie.space.agent.AgentMain</pre.main.path>
     </properties>
 
+
     <dependencies>
-        <!--   这个依赖只作用于编译时期，运行时使用Xbootclasspath/a引入    -->
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>minxie.space</groupId>
-            <artifactId>client</artifactId>
+            <artifactId>jvm-metrics</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>minxie.space</groupId>
+            <artifactId>metrics-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>minxie.space</groupId>
+            <artifactId>metrics-server</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>minxie.space</groupId>
+            <artifactId>thread-pool-metrics</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
@@ -54,6 +82,43 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <artifactSet>
+                        <includes>
+                            <include>net.bytebuddy:byte-buddy:jar:</include>
+                            <include>net.bytebuddy:byte-buddy-agent:jar:</include>
+                            <include>minxie.space:**:jar:</include>
+                            <include>org.jetbrains.kotlin:**:jar:</include>
+                            <include>org.jetbrains:**:jar:</include>
+                            <include>io.netty:**:jar:</include>
+                        </includes>
+                    </artifactSet>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                    <compilerArguments>
+                        <extdirs>${project.basedir}/src/main/resources/lib</extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
@@ -62,6 +127,7 @@
                             <Premain-Class>${pre.main.path}</Premain-Class>
                             <Can-Redefine-Classes>true</Can-Redefine-Classes>
                             <Can-Retransform-Classes>true</Can-Retransform-Classes>
+                            <Boot-Class-Path>lib/core-1.0-SNAPSHOT.jar</Boot-Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>
