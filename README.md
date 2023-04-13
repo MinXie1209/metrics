@@ -1,6 +1,11 @@
-# JMX Exporter
+# Metric
 
-一个收集应用的metrics指标的agent
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/MinXie1209/metrics/main/LICENSE)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/MinXie1209/metrics)](https://github.com/MinXie1209/metrics/graphs/commit-activity)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/minxie1209/metrics.svg)](http://isitmaintained.com/project/MinXie1209/metrics "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/MinXie1209/metrics.svg)](http://isitmaintained.com/project/MinXie1209/metrics "Percentage of issues still open")
+
+🔥🔥🔥监控指标，CPU使用情况、类加载统计、垃圾回收器回收情况、内存占用情况、线程运行情况、Tomcat线程池、JDK线程池等。 Monitor metrics, CPU usage, class load statistics, garbage collector collection, memory usage, thread running, Tomcat thread pool, JDK thread pool, etc.
 
 ## 怎么使用?
 jmx_agent 提供了assembly打包插件，可通过assembly:assembly 打出一个带依赖的包
