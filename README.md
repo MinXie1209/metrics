@@ -82,3 +82,8 @@ java -javaagent:/tmp/agent-1.0-SNAPSHOT.jar=54321 -jar demo.jar
 ![dashboard](./docs/dashboard03.jpg)
 
 --------------------
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=MinXie1209/metrics&type=Date)](https://star-history.com/#MinXie1209/metrics&Date)
+
