@@ -93,16 +93,20 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>net.bytebuddy:byte-buddy:jar:</include>
-                            <include>net.bytebuddy:byte-buddy-agent:jar:</include>
-                            <include>minxie.space:**:jar:</include>
-                            <include>org.jetbrains.kotlin:**:jar:</include>
-                            <include>org.jetbrains:**:jar:</include>
-                            <include>io.netty:**:jar:</include>
-                        </includes>
-                    </artifactSet>
+                    <relocations>
+                        <relocation>
+                            <pattern>net.bytebuddy</pattern>
+                            <shadedPattern>minxie.space.agent.shade.bytebuddy</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.jetbrains</pattern>
+                            <shadedPattern>minxie.space.agent.shade.jetbrains</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>io.netty</pattern>
+                            <shadedPattern>minxie.space.agent.shade.netty</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
             </plugin>
             <plugin>
