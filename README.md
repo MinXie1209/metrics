@@ -83,7 +83,13 @@ java -javaagent:/tmp/agent-1.0-SNAPSHOT.jar=54321 -jar demo.jar
 
 --------------------
 
+## 关注
+看到这儿，请给项目一个 star，你的支持是我们前进的动力！
+
+## 知识星球
+![知识星球](https://p.ipic.vip/ktovur.png)
+
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=MinXie1209/metrics&type=Date)](https://star-history.com/#MinXie1209/metrics&Date)
-
