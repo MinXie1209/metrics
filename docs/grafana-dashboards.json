@@ -171,7 +171,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
+        "w": 3,
         "x": 3,
         "y": 0
       },
@@ -253,7 +253,7 @@
       "gridPos": {
         "h": 4,
         "w": 4,
-        "x": 7,
+        "x": 6,
         "y": 0
       },
       "id": 15,
@@ -330,8 +330,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 7,
-        "x": 11,
+        "w": 4,
+        "x": 10,
         "y": 0
       },
       "id": 19,
@@ -383,7 +383,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "dark-red",
                 "value": null
               }
             ]
@@ -393,11 +393,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
+        "w": 4,
+        "x": 14,
         "y": 0
       },
-      "id": 69,
+      "id": 61,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -422,15 +422,81 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "tomcat_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}",
+          "expr": "jvm_classes_unloaded_total{applicationName = \"$applicationName\", instance=\"$instance\"}",
           "hide": false,
           "instant": false,
-          "legendFormat": "Tomcat 完成任务总数",
+          "legendFormat": "unload",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "Tomcat 完成任务总数",
+      "title": "Class unload",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 4,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "expr": "jvm_classes_currently_loaded{applicationName = \"$applicationName\", instance=\"$instance\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 5,
+          "legendFormat": "loaded",
+          "metric": "jvm_classes_loaded",
+          "range": true,
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "title": "Class loading",
       "type": "stat"
     },
     {
@@ -552,7 +618,7 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
+        "w": 5,
         "x": 4,
         "y": 4
       },
@@ -630,8 +696,8 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 4,
-        "x": 8,
+        "w": 6,
+        "x": 9,
         "y": 4
       },
       "id": 38,
@@ -706,77 +772,11 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 12,
+        "w": 4,
+        "x": 15,
         "y": 4
       },
-      "id": 4,
-      "links": [],
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.4.7",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "editorMode": "code",
-          "expr": "jvm_classes_currently_loaded{applicationName = \"$applicationName\", instance=\"$instance\"}",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 5,
-          "legendFormat": "loaded",
-          "metric": "jvm_classes_loaded",
-          "range": true,
-          "refId": "A",
-          "step": 10
-        }
-      ],
-      "title": "Class loading",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "$datasource"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "dark-red",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 4
-      },
-      "id": 61,
+      "id": 83,
       "links": [],
       "options": {
         "colorMode": "value",
@@ -801,15 +801,80 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "jvm_classes_unloaded_total{applicationName = \"$applicationName\", instance=\"$instance\"}",
+          "expr": "sum(jdk_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"})",
           "hide": false,
           "instant": false,
-          "legendFormat": "unload",
+          "legendFormat": "Tomcat 完成任务总数",
           "range": true,
           "refId": "B"
         }
       ],
-      "title": "Class unload",
+      "title": "JDK 线程池完成任务总数",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "$datasource"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 19,
+        "y": 4
+      },
+      "id": 69,
+      "links": [],
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.4.7",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "$datasource"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "tomcat_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Tomcat 完成任务总数",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Tomcat 完成任务总数",
       "type": "stat"
     },
     {
@@ -1126,7 +1191,7 @@
           "expr": "increase(jdk_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}[$__interval])",
           "hide": false,
           "instant": false,
-          "legendFormat": "Tomcat 完成任务数",
+          "legendFormat": "JDK线程池 完成任务数",
           "range": true,
           "refId": "B"
         }
@@ -1155,7 +1220,7 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 12,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 36
       },
@@ -1183,6 +1248,8 @@
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
+      "repeat": "threadPoolName",
+      "repeatDirection": "h",
       "seriesOverrides": [],
       "spaceLength": 10,
       "stack": false,
@@ -1193,7 +1260,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jdk_thread_pool_active_count{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "expr": "jdk_thread_pool_active_count{threadPoolName=\"$threadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "format": "time_series",
           "intervalFactor": 1,
           "legendFormat": "active_count",
@@ -1206,7 +1273,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jdk_thread_pool_core_pool_size{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "expr": "jdk_thread_pool_core_pool_size{threadPoolName=\"$threadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "hide": false,
           "legendFormat": "core_pool_size",
           "range": true,
@@ -1218,7 +1285,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jdk_thread_pool_maximum_pool_size{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "expr": "jdk_thread_pool_maximum_pool_size{threadPoolName=\"$threadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "hide": false,
           "legendFormat": "maximum_pool_size",
           "range": true,
@@ -1230,7 +1297,7 @@
             "uid": "$datasource"
           },
           "editorMode": "code",
-          "expr": "jdk_thread_pool_queue_size{applicationName = \"$applicationName\",instance=\"$instance\"}",
+          "expr": "jdk_thread_pool_queue_size{threadPoolName=\"$threadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
           "hide": false,
           "legendFormat": "queue_size",
           "range": true,
@@ -1239,7 +1306,7 @@
       ],
       "thresholds": [],
       "timeRegions": [],
-      "title": "JDK Thread Pool",
+      "title": "JDK Thread Pool[$threadPoolName]",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -1286,7 +1353,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 69
       },
       "hiddenSeries": false,
       "id": 51,
@@ -1393,7 +1460,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 57
+        "y": 78
       },
       "hiddenSeries": false,
       "id": 8,
@@ -1508,99 +1575,6 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": {
-        "uid": "$datasource"
-      },
-      "decimals": 0,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 57
-      },
-      "hiddenSeries": false,
-      "id": 5,
-      "legend": {
-        "alignAsTable": true,
-        "avg": false,
-        "current": true,
-        "max": true,
-        "min": true,
-        "rightSide": false,
-        "show": true,
-        "total": false,
-        "values": true
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "9.4.7",
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "datasource": {
-            "uid": "$datasource"
-          },
-          "expr": "increase(jvm_gc_collection_seconds_sum{applicationName = \"$applicationName\",instance=~\"$instance\"}[$__interval])",
-          "format": "time_series",
-          "interval": "60s",
-          "intervalFactor": 1,
-          "legendFormat": "{{gc}}",
-          "metric": "jvm_gc_collection_seconds_sum",
-          "refId": "A",
-          "step": 10
-        }
-      ],
-      "thresholds": [],
-      "timeRegions": [],
-      "title": "GC time",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "mode": "time",
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "$$hashKey": "object:79",
-          "format": "s",
-          "logBase": 1,
-          "show": true
-        },
-        {
-          "$$hashKey": "object:80",
-          "format": "short",
-          "logBase": 1,
-          "show": false
-        }
-      ],
-      "yaxis": {
-        "align": false
-      }
-    },
-    {
       "aliasColors": {
         "Committed": "semi-dark-yellow",
         "Max": "dark-blue",
@@ -1618,7 +1592,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 66
+        "y": 87
       },
       "hiddenSeries": false,
       "id": 2,
@@ -1743,7 +1717,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 75
+        "y": 114
       },
       "hiddenSeries": false,
       "id": 6,
@@ -1835,10 +1809,103 @@
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 114
+      },
+      "hiddenSeries": false,
+      "id": 5,
+      "legend": {
+        "alignAsTable": true,
+        "avg": false,
+        "current": true,
+        "max": true,
+        "min": true,
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "links": [],
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "9.4.7",
+      "pointradius": 5,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "datasource": {
+            "uid": "$datasource"
+          },
+          "expr": "increase(jvm_gc_collection_seconds_sum{applicationName = \"$applicationName\",instance=~\"$instance\"}[$__interval])",
+          "format": "time_series",
+          "interval": "60s",
+          "intervalFactor": 1,
+          "legendFormat": "{{gc}}",
+          "metric": "jvm_gc_collection_seconds_sum",
+          "refId": "A",
+          "step": 10
+        }
+      ],
+      "thresholds": [],
+      "timeRegions": [],
+      "title": "GC time",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "mode": "time",
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:79",
+          "format": "s",
+          "logBase": 1,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:80",
+          "format": "short",
+          "logBase": 1,
+          "show": false
+        }
+      ],
+      "yaxis": {
+        "align": false
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": {
+        "uid": "$datasource"
+      },
+      "decimals": 0,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 123
       },
       "hiddenSeries": false,
       "id": 3,
@@ -1960,7 +2027,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 131
       },
       "hiddenSeries": false,
       "id": 68,
@@ -2128,7 +2195,7 @@
         "h": 12,
         "w": 24,
         "x": 0,
-        "y": 104
+        "y": 143
       },
       "id": 56,
       "links": [],
@@ -2179,7 +2246,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 116
+        "y": 155
       },
       "hiddenSeries": false,
       "id": 44,
@@ -2339,7 +2406,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -2371,7 +2438,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": [
             "All"
           ],
@@ -2382,7 +2449,7 @@
         "datasource": {
           "uid": "$datasource"
         },
-        "definition": "",
+        "definition": "label_values(jvm_memory_bytes_used{applicationName = \"$applicationName\", instance=\"$instance\"}, area)",
         "hide": 2,
         "includeAll": true,
         "multi": true,
@@ -2390,7 +2457,7 @@
         "options": [],
         "query": {
           "query": "label_values(jvm_memory_bytes_used{applicationName = \"$applicationName\", instance=\"$instance\"}, area)",
-          "refId": "Prometheus-memarea-Variable-Query"
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -2420,6 +2487,36 @@
         "options": [],
         "query": {
           "query": "applicationName",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(jdk_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}, threadPoolName)",
+        "hide": 2,
+        "includeAll": true,
+        "multi": true,
+        "name": "threadPoolName",
+        "options": [],
+        "query": {
+          "query": "label_values(jdk_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}, threadPoolName)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -2457,6 +2554,6 @@
   "timezone": "",
   "title": "JVM-M",
   "uid": "minxie-jvm-dashboard",
-  "version": 13,
+  "version": 23,
   "weekStart": ""
 }
