@@ -876,7 +876,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(dubbo2thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"})",
+              "expr": "sum(dubbo_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"})",
               "hide": false,
               "instant": false,
               "legendFormat": "Tomcat 完成任务总数",
@@ -884,7 +884,7 @@
               "refId": "B"
             }
           ],
-          "title": "Dubbo2 线程池完成任务总数",
+          "title": "Dubbo 线程池完成任务总数",
           "type": "stat"
         },
         {
@@ -2342,7 +2342,7 @@
             }
           },
           "pluginVersion": "9.4.7",
-          "repeat": "dubbo2ThreadPoolName",
+          "repeat": "dubboThreadPoolName",
           "repeatDirection": "h",
           "targets": [
             {
@@ -2352,15 +2352,15 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "increase(dubbo2thread_pool_completed_task_count{threadPoolName=\"$dubbo2ThreadPoolName\",applicationName = \"$applicationName\", instance=\"$instance\"}[$__interval])",
+              "expr": "increase(dubbo_thread_pool_completed_task_count{threadPoolName=\"$dubboThreadPoolName\",applicationName = \"$applicationName\", instance=\"$instance\"}[$__interval])",
               "hide": false,
               "instant": false,
-              "legendFormat": "${dubbo2ThreadPoolName} 完成任务数",
+              "legendFormat": "${dubboThreadPoolName} 完成任务数",
               "range": true,
               "refId": "B"
             }
           ],
-          "title": "Dubbo2线程池[$dubbo2ThreadPoolName] 完成任务数",
+          "title": "Dubbo线程池[$dubboThreadPoolName] 完成任务数",
           "type": "timeseries"
         },
         {
@@ -2413,7 +2413,7 @@
           "pointradius": 5,
           "points": false,
           "renderer": "flot",
-          "repeat": "dubbo2ThreadPoolName",
+          "repeat": "dubboThreadPoolName",
           "repeatDirection": "h",
           "seriesOverrides": [],
           "spaceLength": 10,
@@ -2425,7 +2425,7 @@
                 "uid": "$datasource"
               },
               "editorMode": "code",
-              "expr": "dubbo2thread_pool_active_count{threadPoolName=\"$dubbo2ThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
+              "expr": "dubbo_thread_pool_active_count{threadPoolName=\"$dubboThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
               "format": "time_series",
               "intervalFactor": 1,
               "legendFormat": "active_count",
@@ -2438,7 +2438,7 @@
                 "uid": "$datasource"
               },
               "editorMode": "code",
-              "expr": "dubbo2thread_pool_core_pool_size{threadPoolName=\"$dubbo2ThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
+              "expr": "dubbo_thread_pool_core_pool_size{threadPoolName=\"$dubboThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
               "hide": false,
               "legendFormat": "core_pool_size",
               "range": true,
@@ -2450,7 +2450,7 @@
                 "uid": "$datasource"
               },
               "editorMode": "code",
-              "expr": "dubbo2thread_pool_maximum_pool_size{threadPoolName=\"$dubbo2ThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
+              "expr": "dubbo_thread_pool_maximum_pool_size{threadPoolName=\"$dubboThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
               "hide": false,
               "legendFormat": "maximum_pool_size",
               "range": true,
@@ -2462,7 +2462,7 @@
                 "uid": "$datasource"
               },
               "editorMode": "code",
-              "expr": "dubbo2thread_pool_queue_size{threadPoolName=\"$dubbo2ThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
+              "expr": "dubbo_thread_pool_queue_size{threadPoolName=\"$dubboThreadPoolName\",applicationName = \"$applicationName\",instance=\"$instance\"}",
               "hide": false,
               "legendFormat": "queue_size",
               "range": true,
@@ -2471,7 +2471,7 @@
           ],
           "thresholds": [],
           "timeRegions": [],
-          "title": "Dubbo2 Thread Pool[$dubbo2ThreadPoolName]",
+          "title": "Dubbo Thread Pool[$dubboThreadPoolName]",
           "tooltip": {
             "shared": true,
             "sort": 0,
@@ -2503,7 +2503,7 @@
           }
         }
       ],
-      "title": "Dubbo2线程池",
+      "title": "Dubbo线程池",
       "type": "row"
     },
     {
@@ -2942,14 +2942,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(dubbo2thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}, threadPoolName)",
+        "definition": "label_values(dubbo_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}, threadPoolName)",
         "hide": 2,
         "includeAll": true,
         "multi": true,
-        "name": "dubbo2ThreadPoolName",
+        "name": "dubboThreadPoolName",
         "options": [],
         "query": {
-          "query": "label_values(dubbo2thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}, threadPoolName)",
+          "query": "label_values(dubbo_thread_pool_completed_task_count{applicationName = \"$applicationName\", instance=\"$instance\"}, threadPoolName)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
