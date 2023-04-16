@@ -10,8 +10,10 @@ import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpRequestDecoder
 import io.netty.handler.codec.http.HttpResponseEncoder
 import minxie.space.jvm.vo.metrics.*
+import minxie.space.thread.metrics.Dubbo2ThreadPoolMetricsVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
 import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
+import java.lang.StringBuilder
 
 class MetricHttpServer {
 
@@ -46,7 +48,17 @@ class MetricHttpServer {
 object HttpMetricResponse {
 
     fun response(): String {
-        return "${getJvmInfo()}${getClassInfo()}${getGcInfo()}${getMemoryInfo()}${getProcessInfo()}${getJvmThreadsState()}${getTomcatThreadPoolInfo()}${getJdkThreadPoolInfo()}"
+        val responseStr = StringBuilder()
+        responseStr.append(getJvmInfo())
+        responseStr.append(getClassInfo())
+        responseStr.append(getGcInfo())
+        responseStr.append(getMemoryInfo())
+        responseStr.append(getProcessInfo())
+        responseStr.append(getJvmThreadsState())
+        responseStr.append(getTomcatThreadPoolInfo())
+        responseStr.append(getJdkThreadPoolInfo())
+        responseStr.append(getDubbp2ThreadPoolInfo())
+        return responseStr.toString()
     }
 
     private fun getGcInfo(): String {
@@ -86,5 +98,9 @@ object HttpMetricResponse {
 
     private fun getJdkThreadPoolInfo(): String {
         return JdkThreadPoolMetricsVo().toString()
+    }
+
+    private fun getDubbp2ThreadPoolInfo(): String {
+        return Dubbo2ThreadPoolMetricsVo().toString()
     }
 }
