@@ -10,7 +10,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpRequestDecoder
 import io.netty.handler.codec.http.HttpResponseEncoder
 import minxie.space.jvm.vo.metrics.*
-import minxie.space.thread.metrics.Dubbo2ThreadPoolMetricsVo
+import minxie.space.thread.metrics.DubboThreadPoolMetricsVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
 import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
 import java.lang.StringBuilder
@@ -57,7 +57,7 @@ object HttpMetricResponse {
         responseStr.append(getJvmThreadsState())
         responseStr.append(getTomcatThreadPoolInfo())
         responseStr.append(getJdkThreadPoolInfo())
-        responseStr.append(getDubbp2ThreadPoolInfo())
+        responseStr.append(getDubboThreadPoolInfo())
         return responseStr.toString()
     }
 
@@ -100,7 +100,7 @@ object HttpMetricResponse {
         return JdkThreadPoolMetricsVo().toString()
     }
 
-    private fun getDubbp2ThreadPoolInfo(): String {
-        return Dubbo2ThreadPoolMetricsVo().toString()
+    private fun getDubboThreadPoolInfo(): String {
+        return DubboThreadPoolMetricsVo().toString()
     }
 }

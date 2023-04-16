@@ -6,7 +6,7 @@ import java.util.Set;
 public class ThreadPoolContext {
     private static final Set<Object> tomcatThreadPoolSet = new HashSet<Object>();
     private static final Set<Object> jdkThreadPoolSet = new HashSet<Object>();
-    private static final Set<Object> dubbo2ThreadPoolSet = new HashSet<Object>();
+    private static final Set<Object> dubboThreadPoolSet = new HashSet<Object>();
 
     public static Set<Object> getTomcatThreadPoolSet() {
         return tomcatThreadPoolSet;
@@ -26,13 +26,13 @@ public class ThreadPoolContext {
         jdkThreadPoolSet.add(obj);
     }
 
-    public static Set<Object> getDubbo2ThreadPoolSet() {
-        return dubbo2ThreadPoolSet;
+    public static Set<Object> getDubboThreadPoolSet() {
+        return dubboThreadPoolSet;
     }
 
-    public static void addDubbo2ThreadPool(Object obj) {
-        System.out.println("addDubbo2ThreadPool: " + obj);
+    public static void addDubboThreadPool(Object obj) {
+        System.out.println("addDubboThreadPool: " + obj);
         jdkThreadPoolSet.remove(obj);
-        dubbo2ThreadPoolSet.add(obj);
+        dubboThreadPoolSet.add(obj);
     }
 }
