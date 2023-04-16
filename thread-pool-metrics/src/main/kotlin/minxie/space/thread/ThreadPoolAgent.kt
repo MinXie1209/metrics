@@ -9,6 +9,8 @@ object ThreadPoolAgent {
         TomcatThreadPoolAgent.premain(arg, instrumentation)
         // 插桩 jdk线程池
         JdkThreadPoolAgent.premain(arg, instrumentation)
+        // 插桩 dubbo2线程池
+        Dubbo2ThreadPoolAgent.premain(arg, instrumentation)
     }
 
 
