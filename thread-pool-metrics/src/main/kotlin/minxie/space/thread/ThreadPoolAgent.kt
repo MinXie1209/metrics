@@ -11,6 +11,8 @@ object ThreadPoolAgent {
         JdkThreadPoolAgent.premain(arg, instrumentation)
         // 插桩 dubbo线程池
         DubboThreadPoolAgent.premain(arg, instrumentation)
+        // 插桩 rocketmq线程池
+        RocketMQThreadPoolAgent.premain(arg, instrumentation)
     }
 
 

@@ -13,8 +13,8 @@ import minxie.space.jvm.vo.metrics.*
 import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.thread.metrics.DubboThreadPoolMetricsVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
+import minxie.space.thread.metrics.RocketMQThreadPoolMetricsVo
 import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
-import java.lang.StringBuilder
 
 class MetricHttpServer {
 
@@ -60,6 +60,7 @@ object HttpMetricResponse {
         responseStr.append(getTomcatThreadPoolInfo())
         responseStr.append(getJdkThreadPoolInfo())
         responseStr.append(getDubboThreadPoolInfo())
+        responseStr.append(getRocketMQThreadPoolInfo())
         return responseStr.toString()
     }
 
@@ -104,5 +105,10 @@ object HttpMetricResponse {
 
     private fun getDubboThreadPoolInfo(): String {
         return DubboThreadPoolMetricsVo().toString()
+    }
+
+
+    private fun getRocketMQThreadPoolInfo(): String {
+        return RocketMQThreadPoolMetricsVo().toString()
     }
 }
