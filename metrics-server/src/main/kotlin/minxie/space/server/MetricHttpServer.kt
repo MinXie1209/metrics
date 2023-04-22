@@ -10,6 +10,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpRequestDecoder
 import io.netty.handler.codec.http.HttpResponseEncoder
 import minxie.space.jvm.vo.metrics.*
+import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.thread.metrics.DubboThreadPoolMetricsVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
 import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
@@ -20,6 +21,7 @@ class MetricHttpServer {
     @Throws(Exception::class)
     fun start(port: Int, applicationName: String) {
         println("MetricHttpServer start on port $port applicationName-$applicationName")
+        MetricBaseVo.applicationName = applicationName
         val bossGroup: EventLoopGroup = NioEventLoopGroup()
         val workerGroup: EventLoopGroup = NioEventLoopGroup()
         try {
