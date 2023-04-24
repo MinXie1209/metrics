@@ -1,6 +1,7 @@
 package minxie.space.thread.metrics
 
 import minxie.space.metrics.core.thread.ThreadPoolContext
+import minxie.space.metrics.enums.MetricKeyEnum
 import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.metrics.vo.MetricItemVo
 import java.util.concurrent.ThreadPoolExecutor
@@ -12,24 +13,30 @@ class JdkThreadPoolMetricsVo : MetricBaseVo() {
         ThreadPoolContext.getJdkThreadPoolSet().filterIsInstance<ThreadPoolExecutor>().forEach {
             val threadPoolName = it.javaClass.simpleName + "@" + Integer.toHexString(it.hashCode())
             val tag = mapOf(THREAD_POOL_NAME to threadPoolName)
-            it.activeCount?.let { activeCount ->
-                metricList.add(MetricItemVo("jdk_thread_pool_active_count", activeCount.toFloat(), tag))
+            it.activeCount.let { activeCount ->
+                MetricItemVo.build(MetricKeyEnum.JDK_THREAD_POOL_ACTIVE_COUNT, activeCount.toFloat(), tag)
+                    ?.let { metricItem -> metricList.add(metricItem) }
             }
 
-            it.corePoolSize?.let { corePoolSize ->
-                metricList.add(MetricItemVo("jdk_thread_pool_core_pool_size", corePoolSize.toFloat(), tag))
+            it.corePoolSize.let { corePoolSize ->
+                MetricItemVo.build(MetricKeyEnum.JDK_THREAD_POOL_CORE_POOL_SIZE, corePoolSize.toFloat(), tag)
+                    ?.let { metricItem -> metricList.add(metricItem) }
             }
 
-            it.maximumPoolSize?.let { maximumPoolSize ->
-                metricList.add(MetricItemVo("jdk_thread_pool_maximum_pool_size", maximumPoolSize.toFloat(), tag))
+            it.maximumPoolSize.let { maximumPoolSize ->
+                MetricItemVo.build(MetricKeyEnum.JDK_THREAD_POOL_MAXIMUM_POOL_SIZE, maximumPoolSize.toFloat(), tag)
+                    ?.let { metricItem -> metricList.add(metricItem) }
             }
 
             it.queue?.let { queue ->
-                metricList.add(MetricItemVo("jdk_thread_pool_queue_size", queue.size.toFloat(), tag))
+                MetricItemVo.build(MetricKeyEnum.JDK_THREAD_POOL_QUEUE_SIZE, queue.size.toFloat(), tag)
+                    ?.let { metricItem -> metricList.add(metricItem) }
             }
 
-            it.completedTaskCount?.let { completedTaskCount ->
-                metricList.add(MetricItemVo("jdk_thread_pool_completed_task_count", completedTaskCount.toFloat(), tag))
+            it.completedTaskCount.let { completedTaskCount ->
+                MetricItemVo.build(
+                    MetricKeyEnum.JDK_THREAD_POOL_COMPLETED_TASK_COUNT, completedTaskCount.toFloat(), tag
+                )?.let { metricItem -> metricList.add(metricItem) }
             }
 
         }

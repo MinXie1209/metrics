@@ -11,8 +11,5 @@ open class MetricBaseVo {
         }
         return stringBuilder.toString()
     }
-    companion object {
-        var applicationName = "java"
-    }
 
 }

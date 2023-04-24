@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpRequestDecoder
 import io.netty.handler.codec.http.HttpResponseEncoder
 import minxie.space.jvm.vo.metrics.*
 import minxie.space.metrics.vo.MetricBaseVo
+import minxie.space.metrics.vo.MetricsContext
 import minxie.space.thread.metrics.DubboThreadPoolMetricsVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
 import minxie.space.thread.metrics.RocketMQThreadPoolMetricsVo
@@ -19,9 +20,8 @@ import minxie.space.thread.metrics.TomcatThreadPoolMetricsVo
 class MetricHttpServer {
 
     @Throws(Exception::class)
-    fun start(port: Int, applicationName: String) {
-        println("MetricHttpServer start on port $port applicationName-$applicationName")
-        MetricBaseVo.applicationName = applicationName
+    fun start() {
+        println("MetricHttpServer start on port ${MetricsContext.getMetricsConfig().port} applicationName-${MetricsContext.getMetricsConfig().applicationName}")
         val bossGroup: EventLoopGroup = NioEventLoopGroup()
         val workerGroup: EventLoopGroup = NioEventLoopGroup()
         try {
@@ -37,7 +37,7 @@ class MetricHttpServer {
                         ch.pipeline().addLast(HttpServerHandler())
                     }
                 })
-            val f = b.bind(port).sync()
+            val f = b.bind(MetricsContext.getMetricsConfig().port).sync()
             f.channel().closeFuture().sync()
         } finally {
             workerGroup.shutdownGracefully()

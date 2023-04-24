@@ -1,10 +1,10 @@
 package minxie.space.jvm.vo.metrics
 
+import minxie.space.metrics.enums.MetricKeyEnum
 import minxie.space.metrics.vo.MetricBaseVo
 import minxie.space.metrics.vo.MetricItemVo
 
 
-private const val JVM_INFO = "jvm_info"
 
 private const val VERSION = "version"
 
@@ -21,6 +21,7 @@ object JvmInfoMetricVo : MetricBaseVo() {
     private val runtime = System.getProperty("java.runtime.name", "unknown")
 
     init {
-        metricList.add(MetricItemVo(JVM_INFO, 1.0f, mapOf(VERSION to version, VENDOR to vendor, RUNTIME to runtime)))
+        MetricItemVo.build(MetricKeyEnum.JVM_INFO, 1.0f, mapOf(VERSION to version, VENDOR to vendor, RUNTIME to runtime))
+            ?.let { metricList.add(it) }
     }
 }

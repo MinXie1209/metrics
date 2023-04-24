@@ -9,7 +9,7 @@ open class MetricHttpServerTest {
     @Test
     fun start() {
         Thread {
-            MetricHttpServer().start(12345, "java-test")
+            MetricHttpServer().start()
         }.let {
             it.name = "MetricHttpServer"
             it
