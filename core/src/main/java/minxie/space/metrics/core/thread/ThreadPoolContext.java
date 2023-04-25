@@ -1,48 +1,84 @@
 package minxie.space.metrics.core.thread;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 public class ThreadPoolContext {
-    private static final Set<Object> tomcatThreadPoolSet = new HashSet<Object>();
-    private static final Set<Object> jdkThreadPoolSet = new HashSet<Object>();
+    private static final Set<WeakReference<Object>> tomcatThreadPoolSet = new HashSet<>();
+    private static final Set<WeakReference<Object>> jdkThreadPoolSet = new HashSet<>();
     // 加个名称，方便区分
-    private static final HashMap<Object, String> dubboThreadPoolMap = new HashMap<>();
+    private static final WeakHashMap<Object, String> dubboThreadPoolMap = new WeakHashMap<>();
 
     private static final Set<String> dubboThreadPoolNameSet = new HashSet<>();
 
     // 加个名称，方便区分
-    private static final HashMap<Object, String> rocketMQThreadPoolMap = new HashMap<>();
+    private static final WeakHashMap<Object, String> rocketMQThreadPoolMap = new WeakHashMap<>();
 
     private static final Set<String> rocketMQThreadPoolNameSet = new HashSet<>();
 
     public static Set<Object> getTomcatThreadPoolSet() {
+        // 新的set
+        Set<Object> tomcatThreadPoolSet = new HashSet<Object>();
+        for (WeakReference<Object> weakReference : ThreadPoolContext.tomcatThreadPoolSet) {
+            Object obj = weakReference.get();
+            if (obj != null) {
+                tomcatThreadPoolSet.add(obj);
+            }
+        }
         return tomcatThreadPoolSet;
     }
 
     public static void addTomcatThreadPool(Object obj) {
         System.out.println("addTomcatThreadPool: " + obj);
-        tomcatThreadPoolSet.add(obj);
+        // 先判断tomcatThreadPoolSet是否有obj
+        Boolean containObj = false;
+        for (WeakReference<Object> weakReference : ThreadPoolContext.tomcatThreadPoolSet) {
+            Object o = weakReference.get();
+            if (o != null && o.equals(obj)) {
+                containObj = true;
+            }
+        }
+        if (!containObj){
+            tomcatThreadPoolSet.add(new WeakReference(obj));
+        }
     }
 
     public static Set<Object> getJdkThreadPoolSet() {
+        // 新的set
+        Set<Object> jdkThreadPoolSet = new HashSet<>();
+        for (WeakReference<Object> weakReference : ThreadPoolContext.jdkThreadPoolSet) {
+            Object obj = weakReference.get();
+            if (obj != null) {
+                jdkThreadPoolSet.add(obj);
+            }
+        }
         return jdkThreadPoolSet;
     }
 
     public static void addJdkThreadPool(Object obj) {
         System.out.println("addJdkThreadPool: " + obj);
-        jdkThreadPoolSet.add(obj);
+        Boolean containObj = false;
+        for (WeakReference<Object> weakReference : ThreadPoolContext.jdkThreadPoolSet) {
+            Object o = weakReference.get();
+            if (o != null && o.equals(obj)) {
+                containObj = true;
+            }
+        }
+        if (!containObj){
+            jdkThreadPoolSet.add(new WeakReference(obj));
+        }
     }
 
-    public static HashMap<Object, String> getDubboThreadPoolMap() {
+    public static WeakHashMap<Object, String> getDubboThreadPoolMap() {
         return dubboThreadPoolMap;
     }
 
     public static void addDubboThreadPool(Object obj) {
         System.out.println("addDubboThreadPool: " + obj);
-        jdkThreadPoolSet.remove(obj);
+        removeItemFromJdkThreadPool(obj);
         String threadPoolName = getDubboThreadPoolName(obj);
         // 同名的话 加_index
         boolean contains = !dubboThreadPoolNameSet.add(threadPoolName);
@@ -59,6 +95,19 @@ public class ThreadPoolContext {
             dubboThreadPoolMap.put(obj, threadPoolName);
         }
 
+    }
+
+    private static void removeItemFromJdkThreadPool(Object obj) {
+        WeakReference<Object> removeObj = null;
+        for (WeakReference<Object> objectWeakReference : jdkThreadPoolSet) {
+            Object o = objectWeakReference.get();
+            if (o != null && o.equals(obj)) {
+                removeObj = objectWeakReference;
+            }
+        }
+        if (removeObj != null) {
+            jdkThreadPoolSet.remove(obj);
+        }
     }
 
     /**
@@ -85,7 +134,7 @@ public class ThreadPoolContext {
 
     public static void addRocketMQThreadPool(Object obj) {
         System.out.println("addRocketMQThreadPool: " + obj);
-        jdkThreadPoolSet.remove(obj);
+        removeItemFromJdkThreadPool(obj);
         String threadPoolName = getRocketThreadPoolName(obj);
         // 同名的话 加_index
         boolean contains = !rocketMQThreadPoolNameSet.add(threadPoolName);
@@ -126,7 +175,7 @@ public class ThreadPoolContext {
         }
     }
 
-    public static HashMap<Object, String> getRocketMQThreadPoolMap() {
+    public static WeakHashMap<Object, String> getRocketMQThreadPoolMap() {
         return rocketMQThreadPoolMap;
     }
 }

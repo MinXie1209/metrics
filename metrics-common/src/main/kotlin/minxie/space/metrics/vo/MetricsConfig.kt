@@ -13,12 +13,17 @@ object MetricsContext {
                 if (metricsConfig != null) return metricsConfig!!
                 val location = MetricsContext.javaClass.protectionDomain.codeSource.location
                 try {
-                    metricsConfig = Yaml().loadAs(
-                        File("${File(location.path).parent}${File.separator}metrics-config.yml").inputStream(),
-                        MetricsConfig::class.java
-                    ) ?: MetricsConfig()
+                    File("${File(location.path).parent}${File.separator}metrics-config.yml").also {
+                        if (!it.isFile || !it.exists()) {
+                            metricsConfig = MetricsConfig()
+                        } else {
+                            it.inputStream().use {
+                                metricsConfig = Yaml().loadAs(it, MetricsConfig::class.java) ?: MetricsConfig()
+                            }
+                        }
+                    }
                 } catch (e: Exception) {
-                    MetricsConfig()
+                    metricsConfig = MetricsConfig()
                 }
             }
 
