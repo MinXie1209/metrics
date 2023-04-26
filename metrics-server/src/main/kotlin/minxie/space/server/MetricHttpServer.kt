@@ -9,8 +9,13 @@ import io.netty.channel.socket.nio.NioServerSocketChannel
 import io.netty.handler.codec.http.HttpObjectAggregator
 import io.netty.handler.codec.http.HttpRequestDecoder
 import io.netty.handler.codec.http.HttpResponseEncoder
-import minxie.space.jvm.vo.metrics.*
-import minxie.space.metrics.vo.MetricBaseVo
+import io.netty.util.concurrent.DefaultThreadFactory
+import minxie.space.jvm.vo.metrics.ClassMetricVo
+import minxie.space.jvm.vo.metrics.GcMetricVo
+import minxie.space.jvm.vo.metrics.JvmInfoMetricVo
+import minxie.space.jvm.vo.metrics.MemoryMetricVo
+import minxie.space.jvm.vo.metrics.ProcessMetricVo
+import minxie.space.jvm.vo.metrics.ThreadMetricVo
 import minxie.space.metrics.vo.MetricsContext
 import minxie.space.thread.metrics.DubboThreadPoolMetricsVo
 import minxie.space.thread.metrics.JdkThreadPoolMetricsVo
@@ -22,8 +27,8 @@ class MetricHttpServer {
     @Throws(Exception::class)
     fun start() {
         println("MetricHttpServer start on port ${MetricsContext.getMetricsConfig().port} applicationName-${MetricsContext.getMetricsConfig().applicationName}")
-        val bossGroup: EventLoopGroup = NioEventLoopGroup()
-        val workerGroup: EventLoopGroup = NioEventLoopGroup()
+        val bossGroup: EventLoopGroup = NioEventLoopGroup(DefaultThreadFactory("bossGroup", true))
+        val workerGroup: EventLoopGroup = NioEventLoopGroup(DefaultThreadFactory("workerGroup", true))
         try {
             val b = ServerBootstrap()
             b.group(bossGroup, workerGroup)
