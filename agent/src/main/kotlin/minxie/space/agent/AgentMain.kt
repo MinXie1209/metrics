@@ -1,7 +1,6 @@
 package minxie.space.agent
 
 
-import minxie.space.metrics.vo.MetricsContext
 import minxie.space.server.MetricHttpServer
 import minxie.space.thread.ThreadPoolAgent
 import java.lang.instrument.Instrumentation
@@ -15,6 +14,7 @@ object AgentMain {
         Thread {
             MetricHttpServer().start()
         }.let {
+            it.isDaemon = true
             it.name = "MetricHttpServer"
             it
         }.start()
