@@ -24,6 +24,11 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>net.bytebuddy</groupId>
+            <artifactId>byte-buddy-agent</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>minxie.space</groupId>
             <artifactId>metrics-common</artifactId>
             <version>1.0-SNAPSHOT</version>
