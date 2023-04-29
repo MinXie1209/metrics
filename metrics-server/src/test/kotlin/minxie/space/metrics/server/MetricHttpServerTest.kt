@@ -1,7 +1,7 @@
 package minxie.space.metrics.server
 
 import minxie.space.server.MetricHttpServer
-import org.junit.jupiter.api.Test
+import org.junit.Test
 
 
 open class MetricHttpServerTest {
