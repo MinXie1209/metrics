@@ -14,6 +14,7 @@ private const val STATE = "state"
  * 线程指标
  */
 class ThreadMetricVo : MetricBaseVo() {
+    var close = false
     init {
         ManagementFactory.getThreadMXBean()?.let {
             MetricItemVo.build(MetricKeyEnum.JVM_THREADS_CURRENT, it.threadCount.toFloat())
@@ -24,14 +25,22 @@ class ThreadMetricVo : MetricBaseVo() {
                 ?.let { metricItem -> metricList.add(metricItem) }
             MetricItemVo.build(MetricKeyEnum.JVM_THREADS_STARTED_TOTAL, it.totalStartedThreadCount.toFloat())
                 ?.let { metricItem -> metricList.add(metricItem) }
-            MetricItemVo.build(MetricKeyEnum.JVM_THREADS_DEADLOCKED, it.findDeadlockedThreads()?.size?.toFloat() ?: 0f)
-                ?.let { metricItem -> metricList.add(metricItem) }
-            MetricItemVo.build(
-                MetricKeyEnum.JVM_THREADS_DEADLOCKED_MONITOR, it.findMonitorDeadlockedThreads()?.size?.toFloat() ?: 0f
-            )?.let { metricItem ->
-                metricList.add(
-                    metricItem
+            if (!close) {
+                // 此方法设计用于故障排除，但不用于同步控制。这可能是一项昂贵的操作。
+                MetricItemVo.build(
+                    MetricKeyEnum.JVM_THREADS_DEADLOCKED,
+                    it.findDeadlockedThreads()?.size?.toFloat() ?: 0f
                 )
+                    ?.let { metricItem -> metricList.add(metricItem) }
+                // 此方法设计用于故障排除，但不用于同步控制。这可能是一项昂贵的操作。
+                MetricItemVo.build(
+                    MetricKeyEnum.JVM_THREADS_DEADLOCKED_MONITOR,
+                    it.findMonitorDeadlockedThreads()?.size?.toFloat() ?: 0f
+                )?.let { metricItem ->
+                    metricList.add(
+                        metricItem
+                    )
+                }
             }
             it.allThreadIds?.let { threadIds ->
                 it.getThreadInfo(threadIds, 0).let {
