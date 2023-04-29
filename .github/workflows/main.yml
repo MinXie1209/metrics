@@ -1,4 +1,4 @@
-name: Workflow for Codecov 
+name: Workflow for Codecov metrics
 on: [push, pull_request]
 jobs:
   run:
@@ -17,5 +17,5 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          file: coverage/lcov.info
-          token: ${{secrets.CODECOV_TOKEN}}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
