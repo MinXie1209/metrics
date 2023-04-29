@@ -4,6 +4,7 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/MinXie1209/metrics)](https://github.com/MinXie1209/metrics/graphs/commit-activity)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/minxie1209/metrics.svg)](http://isitmaintained.com/project/MinXie1209/metrics "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/MinXie1209/metrics.svg)](http://isitmaintained.com/project/MinXie1209/metrics "Percentage of issues still open")
+[![codecov](https://codecov.io/github/minxie1209/metrics/branch/main/graph/badge.svg?token=WAIEL0SCX6)](https://app.codecov.io/github/minxie1209/metrics)
 
 [Metrics](https://github.com/MinXie1209/metrics) 是一个暴露应用指标的平台，提供业务无侵入方式对生产级Java服务应用进行指标的监控和暴露。
 
