@@ -16,3 +16,6 @@ jobs:
         run: mvn -B test
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          file: build/cover.info
+          token: ${{secrets.CODECOV_TOKEN}}
