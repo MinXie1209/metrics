@@ -1,2 +1,26 @@
-- name: Upload coverage reports to Codecov
-  uses: codecov/codecov-action@v3
+name: Workflow for Codecov 
+on: [push, pull_request]
+jobs:
+  codcov:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          # Make sure the actual branch is checked out when running on pull requests
+          ref: ${{ github.head_ref }}
+
+      - name: Setup Python
+        uses: actions/setup-python@master
+        with:
+          python-version: 3.7
+      - name: Generate coverage report
+        run: |
+          pip install pytest
+          pip install pytest-cov
+          pytest --cov=./api
+      - name: Check code coverage
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
