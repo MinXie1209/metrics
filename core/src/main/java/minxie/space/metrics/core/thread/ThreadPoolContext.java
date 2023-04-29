@@ -127,7 +127,7 @@ public class ThreadPoolContext {
             String mPrefix = (String) mPrefixField.get(threadFactory);
             return mPrefix.substring(0, mPrefix.indexOf("-"));
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return obj.getClass().getSimpleName() + "@" + Integer.toHexString(obj.hashCode());
         }
     }
@@ -170,7 +170,7 @@ public class ThreadPoolContext {
             String threadNamePrefix = (String) threadNamePrefixField.get(threadFactory);
             return threadNamePrefix.substring(0, threadNamePrefix.indexOf("_"));
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return obj.getClass().getSimpleName() + "@" + Integer.toHexString(obj.hashCode());
         }
     }
