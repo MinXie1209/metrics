@@ -49,7 +49,7 @@
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>1.8.0</version>
+                <version>1.8.20</version>
                 <executions>
                     <execution>
                         <id>compile</id>
@@ -66,6 +66,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <nowarn>true</nowarn>  <!-- 禁用警告 -->
+                    <languageVersion>2.0</languageVersion>
+                    <args>
+                        <arg>-Xjsr305=strict</arg> <!-- 对 JSR-305 注解启用严格模式 -->
+                    </args>
+                </configuration>
             </plugin>
         </plugins>
     </build>
